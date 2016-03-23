@@ -1,33 +1,28 @@
 package levi9.praksa.zadatakB;
 
-import java.io.File;
-import java.io.IOException;
-
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import levi9.praksa.zadatakB.controller.Controller;
-import levi9.praksa.zadatakB.impl.InMemoryExampleInput;
-import levi9.praksa.zadatakB.impl.InMemoryExampleOut;
-import levi9.praksa.zadatakB.model.ExampleInput;
+import levi9.praksa.zadatakB.controller.ApiController;
 import levi9.praksa.zadatakB.model.ExampleOut;
-import levi9.praksa.zadatakB.service.ExamleInputService;
 
 public class Main {
 
 	public static void main(String[] args) {
 		System.out.println("Radi...");
+				
+		ApiController apiController = new ApiController();
 		
-		InMemoryExampleInput inMemoryInput = new InMemoryExampleInput();
-		ExampleInput inputObject=inMemoryInput.findAll();
-		//System.out.println("Main "+inputObject.getBookies().get(0).getBetOffers());
+		//String path ="D:\\JovanVukovic\\praksa\\zadatak-b\\test3-only-one-match.json";
+		//ExampleOut out = apiController.getExampleOut(path, null);
 		
-		Controller c = new Controller();
-		ExampleOut out = c.findOdds(inputObject);
-		
-		InMemoryExampleOut inMemoryOut = new InMemoryExampleOut();
-		inMemoryOut.writeAll(out, null);
+		if (args.length<1) {
+			System.out.println("You did not enerd input file path");
+		}else if (args.length==1) {
+			ExampleOut out = apiController.getExampleOut(args[0], null);
+			System.out.println("Putanja ulzanog "+args[0]);
+		}else{
+			ExampleOut out = apiController.getExampleOut(args[0], args[1]);
+			System.out.println("Putanja ulzanog "+args[0]);
+			System.out.println("Putanja izlaznog "+args[1]);
+		}
 	}
 
 }

@@ -5,6 +5,8 @@ import levi9.praksa.zadatakB.model.ExampleOut;
 
 public interface ExampleOutService {
 	
-	ExampleOut writeAll(ExampleOut staf,ErrorJSON error);
+	ExampleOut writeAll(ExampleOut staf,ErrorJSON error,String outFile);
+	
+	boolean writeError(ErrorJSON error, String outFile);
 
 }

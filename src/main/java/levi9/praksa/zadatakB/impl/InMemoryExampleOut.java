@@ -2,47 +2,128 @@ package levi9.praksa.zadatakB.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import levi9.praksa.zadatakB.model.BetOffer;
-import levi9.praksa.zadatakB.model.Booky;
 import levi9.praksa.zadatakB.model.ErrorJSON;
 import levi9.praksa.zadatakB.model.ExampleOut;
-import levi9.praksa.zadatakB.model.Match;
-import levi9.praksa.zadatakB.model.PlacedBet;
 import levi9.praksa.zadatakB.service.ExampleOutService;
 
 public class InMemoryExampleOut implements ExampleOutService {
 
-	public ExampleOut writeAll(ExampleOut eOut,ErrorJSON error) {
-		
+	public boolean writeAll(ExampleOut exampleOut, String path) {
 		ObjectMapper mapper = new ObjectMapper();
 
-		ExampleOut staff = eOut;
-		ErrorJSON errorJson =error;
+		ExampleOut staff = exampleOut;
 
 		try {
 			mapper.setSerializationInclusion(Include.NON_NULL);
 			// Convert object to JSON string and save into a file directly
-			if(errorJson!=null){
-				mapper.writeValue(new File("D:\\out.json"), errorJson);
-			}else {
+			if (path == null)
 				mapper.writeValue(new File("D:\\out.json"), staff);
-			}		
+			else
+				mapper.writeValue(new File(path), staff);
+
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	public String writeNoMach(String noMatch) {
+		ObjectMapper mapper = new ObjectMapper();
+
+		try {
+			mapper.setSerializationInclusion(Include.NON_NULL);
+			// Convert object to JSON string and save into a file directly
+
+			mapper.writeValue(new File("D:\\out.json"), noMatch);
 
 			// Convert object to JSON string
-			//String jsonInString = mapper.writeValueAsString(staff);
-			//System.out.println(jsonInString);
+			// String jsonInString = mapper.writeValueAsString(staff);
+			// System.out.println(jsonInString);
 
 			// Convert object to JSON string and pretty print
-			//jsonInString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(staff);
-			//System.out.println(jsonInString);
+			// jsonInString =
+			// mapper.writerWithDefaultPrettyPrinter().writeValueAsString(staff);
+			// System.out.println(jsonInString);
+
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+	
+	public boolean writeError(ErrorJSON error, String outFile){
+		
+		ObjectMapper mapper = new ObjectMapper();		
+		ErrorJSON errorJson = error;
+
+		try {
+			mapper.setSerializationInclusion(Include.NON_NULL);
+			// Convert object to JSON string and save into a file directly
+			if (errorJson != null) {
+				if (outFile != null) {
+					mapper.writeValue(new File(outFile), errorJson);
+				} else {
+					mapper.writeValue(new File("D:\\out.json"), errorJson);
+				}
+			}
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
+		
+	}
+
+	public ExampleOut writeAll(ExampleOut eOut, ErrorJSON error, String outFile) {
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		ExampleOut staff = eOut;
+		ErrorJSON errorJson = error;
+
+		try {
+			mapper.setSerializationInclusion(Include.NON_NULL);
+			// Convert object to JSON string and save into a file directly
+			if (errorJson != null) {
+				if (outFile != null) {
+					mapper.writeValue(new File(outFile), errorJson);
+				} else {
+					mapper.writeValue(new File("D:\\out.json"), errorJson);
+				}
+			} else {
+				if (outFile != null) {
+					mapper.writeValue(new File(outFile), staff);
+				} else {
+					mapper.writeValue(new File("D:\\out.json"), staff);
+				}
+
+			}
+
+			// Convert object to JSON string
+			// String jsonInString = mapper.writeValueAsString(staff);
+			// System.out.println(jsonInString);
+
+			// Convert object to JSON string and pretty print
+			// jsonInString =
+			// mapper.writerWithDefaultPrettyPrinter().writeValueAsString(staff);
+			// System.out.println(jsonInString);
 
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
@@ -54,7 +135,7 @@ public class InMemoryExampleOut implements ExampleOutService {
 		return null;
 	}
 
-	private ExampleOut createDummyObject() {
+	/*private ExampleOut createDummyObject() {
 
 		BetOffer betOfer = new BetOffer("01", "Djokas-Raonic", new Double("1.3"), new Double("3.2"),
 				new Double("1000.00"));
@@ -103,6 +184,6 @@ public class InMemoryExampleOut implements ExampleOutService {
 
 		return out;
 
-	}
+	}*/
 
 }

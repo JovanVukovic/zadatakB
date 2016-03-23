@@ -107,6 +107,17 @@ public class Controller {
 		return error;
 	}
 
+	public boolean checkJSON_File(ExampleInput input){
+		ExampleInput inputObject = input;
+
+		if (inputObject.getBookies().size() < 2) {
+			System.out.println("Maanje od 2");
+			return false;
+
+		}
+		return true;
+	}
+	
 	public ExampleOut findOdds(ExampleInput input) {
 
 		// InMemoryExampleInput inMemInput = new InMemoryExampleInput();
@@ -137,11 +148,11 @@ public class Controller {
 							Double individual1 = individual(inputObject.getBudget(), betOffer1.get(i).getOddsHome(), calcArb);
 							Double individual2 = individual(inputObject.getBudget(), betOffer2.get(j).getOddsAway(), calcArb);
 							
-							System.out.println("Budzet "+inputObject.getBudget()+", calcArb "+calcArb+" profit "+profit);
+							//System.out.println("Budzet "+inputObject.getBudget()+", calcArb "+calcArb+" profit "+profit);
 							
-							if (individual1>betOffer1.get(i).getMaxBet() || individual2> betOffer1.get(j).getMaxBet()) {
-								break;
-							}
+							//if (individual1>betOffer1.get(i).getMaxBet() || individual2> betOffer1.get(j).getMaxBet()) {
+							//	break;
+							//}
 							
 							PlacedBet placedBet1 = new PlacedBet();
 							PlacedBet placedBet2 = new PlacedBet();
@@ -189,7 +200,6 @@ public class Controller {
 							matches.add(match);
 
 						}
-
 					}
 				}
 
@@ -197,14 +207,13 @@ public class Controller {
 			exampleOut.setCalculatedProfit(end_profit);
 			exampleOut.setMatches(matches);
 			return exampleOut;
-
 		}
 
 		return null;
 	}
 
 	public Double calcArb(Double odd1, Double odd2) {
-		System.out.println("odd1 "+odd1+" odd2 "+odd2);
+		//System.out.println("odd1 "+odd1+" odd2 "+odd2);
 		Double calcArb = ((1 / odd1) + (1 / odd2));
 		return calcArb;
 
