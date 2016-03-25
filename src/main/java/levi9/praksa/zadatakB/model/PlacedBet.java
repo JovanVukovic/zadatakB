@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-// @Generated("org.jsonschema2pojo")
 public class PlacedBet {
 
 	@JsonProperty("bookieId")
@@ -21,10 +20,7 @@ public class PlacedBet {
 	
 	@JsonProperty("betAway")
 	private Double betAway;
-	
-	//@JsonIgnore
-	//private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-	
+		
 	/**
 	* No args constructor for use in serialization
 	*
@@ -42,7 +38,6 @@ public class PlacedBet {
 		this.bookieId=bookieId;
 		this.betHome=betHome;
 		this.betAway=betAway;
-		//this.additionalProperties = additionalProperties;
 	}
 
 	public String getBookieId() {

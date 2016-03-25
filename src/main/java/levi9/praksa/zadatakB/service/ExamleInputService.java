@@ -8,9 +8,10 @@ import levi9.praksa.zadatakB.model.Match;
 
 public interface ExamleInputService {
 
-	ExampleInput findAll(String filePath);
-
-	List<Match> findMatches(ExampleInput exampleInput);
-
-	ExampleOut findExampleOut(String path);
+	/**
+	 * Returns ExampleOut object.
+	 * @param exampleInput
+	 * @return ExampleOut, if exampleInput is valid.
+	 */
+	ExampleOut processInput(ExampleInput exampleInput);
 }

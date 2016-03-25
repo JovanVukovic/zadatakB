@@ -1,0 +1,79 @@
+<h1>{{'ACTIVITIES' | translate}} MOJ</h1>
+<div class="col-sm-6">
+	<input type="text" class="form-control" ng-model="search" /> <select class="form-control"
+		data-ng-options="o.name for o in options" data-ng-model="selectedOption"></select>
+	<button class="btn btn-default" ng-click="getActivities()">Search</button>
+	<button class="btn btn-default"	ng-click="search=null; getActivities();">Reset</button>
+</div>
+
+<div class="col-sm-6">
+<h4>Izaberite po cemu zelite da sortitrate</h4>
+	<select class="form-control"  data-ng-options="o.name for o in optionsSort" data-ng-model="selectedSortOption"></select>
+	<button class="btn btn-default" ng-click="checkSort(selectedSortOption); ">Sort</button>
+</div>
+<!-- <label class="checkbox-inline"><input ng-init="checkStatus=false" type="checkbox" value="" ng-model="checkboxModel"
+ng-click="checkBox(checkboxModel);">Show hidden</label>  -->
+
+<label class="checkbox-inline">
+<input type="checkbox" ng-model="checked" ng-click="CheckBox(checked)">Show hidden</label>
+
+<label class="checkbox-inline">
+<input type="checkbox" ng-model="hasLogsChcekBox" ng-click="HasLogsCheckBox(hasLogsChcekBox)">Has logs</label>
+
+
+<div class="col-sm-1">
+	<input class="form-control bfh-number" ng-model="PoStrani" type="number" name="input" min="3" max="10" required>
+</div>
+
+<table class="table table-bordered"	ng-init="page=0; PoStrani = 4; getActivities(); rBr=0;">
+	<thead>
+		<tr>
+			<th>R.br</th>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Hidden</th>
+			<th>Description</th>
+			<th>Log Count</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="activity in activities" ><!-- ng-hide="activity.hidden==true;" -->
+			<td>{{$index+1 }}</td>
+			<td>{{ activity.id }}</td>
+			<td>{{ activity.name }}</td>
+			<td>{{ activity.hidden }}</td>
+			<td>{{ activity.description }}</td>
+			<td><a ng-hide="activity.logCount==0;"
+				href="/#/activities/{{ activity.id }}/logs">{{ activity.logCount }}</a></td>
+			<td>
+				<button ng-click="deleteActivity(activity.id)" class="btn btn-danger btn-xs">Delete</button> 
+				<a href="/#/activities/edit/{{ activity.id }}" class="btn btn-default btn-xs">Edit</a> 
+				<a href="/#/activities/hide/{{ activity.id }}" class="btn btn-warning btn-xs">HideActiv</a>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<div ng-hide="!deletegreska && !uspesnoBrisanje">
+	<div ng-hide="deletegreska" ng-show="uspesnoBrisanje" class="alert alert-success" role="alert">{{porukaBrisanje}},{{deleteMessage.name}}</div>
+	<div ng-show="deletegreska" ng-hide="uspesnoBrisanje" class="alert alert-danger" role="alert">{{porukaBrisanje}},{{deleteMessage.name}}</div>
+</div>
+<div class="col-md-12 text-center">
+	<span ng-hide="activities.length > 0 || errorMessage"
+		class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+	<span ng-show="errorMessage" class="label label-danger">{{errorMessage }}</span>
+</div>
+
+<div class="col-md-12 text-right">
+	<button ng-disabled="page == 0"
+		ng-click="page = page - 1; getActivities();" class="btn btn-default">Previous</button>
+	<!-- <span class="label label-default">{{ page + 1 }}</span>  
+	<ul class="pagination">
+    	<li ng-repeat="activity in activities"><a href="#">{{ activity.id }}</a></li>    	
+    </ul>-->
+    <uib-pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></uib-pagination>
+   	<button ng-disabled="page == totalPages - 1"
+		ng-click="page = page + 1; getActivities();" class="btn btn-default">Next {{totalItems}}</button>
+</div>
+
+<a href="#/activities/add">Add activity</a>

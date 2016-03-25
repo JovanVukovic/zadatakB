@@ -1,42 +1,57 @@
 package levi9.praksa.zadatakB.controller;
 
-import levi9.praksa.zadatakB.impl.InMemoryExampleInput;
-import levi9.praksa.zadatakB.impl.InMemoryExampleOut;
-import levi9.praksa.zadatakB.model.ErrorJSON;
-import levi9.praksa.zadatakB.model.ExampleOut;
+import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+
+import levi9.praksa.zadatakB.ErrorCodes;
+import levi9.praksa.zadatakB.exception.ZadatakBException;
+import levi9.praksa.zadatakB.model.ErrorJSON;
+import levi9.praksa.zadatakB.model.ExampleInput;
+import levi9.praksa.zadatakB.model.ExampleOut;
+import levi9.praksa.zadatakB.service.ExamleInputService;
+
+@RestController
+@RequestMapping(value = "/")
 public class ApiController {
 
-	private InMemoryExampleInput inMemoryInput = new InMemoryExampleInput();
-	private InMemoryExampleOut inMemoryOut = new InMemoryExampleOut();
+	private static final Logger logger = Logger.getLogger(ApiController.class);
 
-	// private ExamleInputService exampleInputService;
-	// private ExampleOutService exampleOutService;
-	// private ExampleInput exampleInput = inMemoryInput.findAll("");
-	private ExampleOut exampleOut = null;
-
-	public ExampleOut getExampleOut(String path, String outPath) {
-
-		exampleOut = inMemoryInput.findExampleOut(path);
-		if (exampleOut == null) {
-			ErrorJSON error = new ErrorJSON();
-			error.setError_code(1);
-			error.setError_description("Bad JSON file. There is only one Booky!");
-			boolean written = inMemoryOut.writeError(error, outPath);
-			return null;
-		} else if (exampleOut.getMatches() == null) {
-			ErrorJSON error = new ErrorJSON();
-			error.setError_code(2);
-			error.setError_description("No matches!");
-			boolean written = inMemoryOut.writeError(error, outPath);
-			return null;
-		} else {
-			boolean written = inMemoryOut.writeAll(exampleOut, outPath);
-			if (written) {
-				return exampleOut;
-			} else {
-				return null;
-			}
-		}
+	@Autowired
+	private ExamleInputService inputService;
+	
+	
+	@RequestMapping(value = "api/matches", method = RequestMethod.POST)
+	public ExampleOut HandleRequest(@RequestBody ExampleInput exampleInput) {
+		
+		return inputService.processInput(exampleInput);
 	}
+
+	@ExceptionHandler(ZadatakBException.class)
+	public ResponseEntity<ErrorJSON> handleErrorException(ZadatakBException exception) {
+		ErrorJSON error = new ErrorJSON();
+		error.setErrorCode(exception.getCode());
+		error.setErrorDescription(exception.getDescription());
+		return new ResponseEntity<ErrorJSON>(error, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(Exception.class)
+	  public ResponseEntity<ErrorJSON> handleError(HttpServletRequest req, Exception exception) {
+	    logger.error("Request: " + req.getRequestURL() + " raised " + exception);
+	    ErrorJSON error = new ErrorJSON();
+		error.setErrorCode(ErrorCodes.BAD_JSON_FILE.getCode());
+		error.setErrorDescription(exception.getMessage());		
+	    return new ResponseEntity<ErrorJSON>(error, HttpStatus.BAD_REQUEST);
+	  }
+
+	
 }

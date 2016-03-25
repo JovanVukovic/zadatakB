@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html ng-app="zadatakB">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Levi9 Praksa | Zadatak B</title>
+
+        <!-- Bootstrap -->
+        <link href="/static/css/bootstrap.css" rel="stylesheet">
+        <link href="/static/css/bootstrap-theme.css" rel="stylesheet">
+        <link href="/static/css/main.css" rel="stylesheet">
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="/static/js/jquery-2.1.1.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="/static/js/bootstrap.js"></script>
+        
+        <script src="/static/js/angular.js"></script>
+        <script src="/static/js/angular-route.js"></script>
+        <script src="/static/js/app.js"></script>
+        <script src="/static/js/app.controllers.js"></script>
+        <script src="/static/js/app.routes.js"></script>
+        
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-animate.js"></script>
+    	<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.1.2.js"></script>
+    	
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/#/">Home</a>
+                </div>
+            </div>
+        </div>
+        <div class="jumbotron">
+            <div class="container text-center">
+                <h1>Application for findig matches for betting</h1>
+            </div>
+        </div>
+		<div class="container" ng-view></div>
+	</body>
+</html>

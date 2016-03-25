@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "error_code", "error_description"})
+@JsonPropertyOrder({ "errorCode", "errorDescription"})
 public class ErrorJSON {
 
 	/**
@@ -13,31 +13,31 @@ public class ErrorJSON {
 	 * (Required)
 	 *
 	 */
-	@JsonProperty("error_code")
-	private Integer error_code;
+	@JsonProperty("errorCode")
+	private Integer errorCode;
 	
 	/**
 	 *
 	 * (Required)
 	 *
 	 */
-	@JsonProperty("error_description")
-	private String error_description;
+	@JsonProperty("errorDescription")
+	private String errorDescription;
 
-	public Integer getError_code() {
-		return error_code;
+	public Integer getErrorCode() {
+		return errorCode;
 	}
 
-	public void setError_code(Integer error_code) {
-		this.error_code = error_code;
+	public void setErrorCode(Integer errorCode) {
+		this.errorCode = errorCode;
 	}
 
-	public String getError_description() {
-		return error_description;
+	public String getErrorDescription() {
+		return errorDescription;
 	}
 
-	public void setError_description(String error_description) {
-		this.error_description = error_description;
+	public void setErrorDescription(String errorDescription) {
+		this.errorDescription = errorDescription;
 	}
 	
 	
