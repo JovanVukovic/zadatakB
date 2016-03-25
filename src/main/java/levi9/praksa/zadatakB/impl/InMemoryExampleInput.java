@@ -1,17 +1,12 @@
 package levi9.praksa.zadatakB.impl;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import levi9.praksa.zadatakB.ErrorCodes;
 import levi9.praksa.zadatakB.Main;
@@ -21,12 +16,20 @@ import levi9.praksa.zadatakB.model.ExampleInput;
 import levi9.praksa.zadatakB.model.ExampleOut;
 import levi9.praksa.zadatakB.model.Match;
 import levi9.praksa.zadatakB.model.PlacedBet;
+import levi9.praksa.zadatakB.repository.ExampleInputRepository;
+import levi9.praksa.zadatakB.repository.ExampleOutRepository;
 import levi9.praksa.zadatakB.service.ExamleInputService;
 
 @Service
 public class InMemoryExampleInput implements ExamleInputService {
 
 	final static Logger logger = LogManager.getLogger(Main.class);
+
+	@Autowired
+	private ExampleInputRepository exampleInputRepository;
+
+	@Autowired
+	private ExampleOutRepository exampleOutRepository;
 
 	/**
 	 * Returns List of Match
@@ -121,7 +124,7 @@ public class InMemoryExampleInput implements ExamleInputService {
 	 * <a href="http://www.sportsbettingworm.com/arbitrage-calculations/">http:/
 	 * /www.sportsbettingworm.com/arbitrage-calculations/</a>)
 	 * 
-	 * @param odd1
+	 * @param odd1 
 	 * @param odd2
 	 * @return Returns true if odd1 and odd2 are valid arbitrage odds.
 	 */
@@ -148,6 +151,7 @@ public class InMemoryExampleInput implements ExamleInputService {
 			logger.error("Bad JSON, only one Bookie!");
 			throw new ZadatakBException(ErrorCodes.BAD_JSON_ONLY_ONE_BOOKIE, "Bad JSON, only one Bookie!");
 		} else {
+
 			List<Match> matches = findMatches(exampleInput);
 			if (matches.size() == 0) {
 				logger.info("There is no match!");
@@ -156,6 +160,10 @@ public class InMemoryExampleInput implements ExamleInputService {
 			ExampleOut exampleOut = new ExampleOut();
 			exampleOut.setCalculatedProfit(exampleInput.getDesiredProfit());
 			exampleOut.setMatches(matches);
+
+			 exampleInputRepository.save(exampleInput);
+			 exampleOutRepository.save(exampleOut);
+
 			return exampleOut;
 		}
 	}

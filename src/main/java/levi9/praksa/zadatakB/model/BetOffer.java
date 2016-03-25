@@ -1,12 +1,27 @@
 package levi9.praksa.zadatakB.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "id", "name", "oddsHome", "oddsAway", "maxBet" })
+@Entity
+@Table(name="bet_offer")
 public class BetOffer {
+	
+	@Column
+	@Id
+	@GeneratedValue
+	@JsonIgnore
+	private Long id_bet_offer;
 
 	/**
 	 *
@@ -14,6 +29,7 @@ public class BetOffer {
 	 *
 	 */
 	@JsonProperty("id")
+	@Column
 	private String id;
 	/**
 	 *
@@ -21,6 +37,7 @@ public class BetOffer {
 	 *
 	 */
 	@JsonProperty("name")
+	@Column
 	private String name;
 	/**
 	 *
@@ -28,6 +45,7 @@ public class BetOffer {
 	 *
 	 */
 	@JsonProperty("oddsHome")
+	@Column
 	private Double oddsHome;
 	/**
 	 *
@@ -35,6 +53,7 @@ public class BetOffer {
 	 *
 	 */
 	@JsonProperty("oddsAway")
+	@Column
 	private Double oddsAway;
 	/**
 	 *
@@ -42,6 +61,7 @@ public class BetOffer {
 	 *
 	 */
 	@JsonProperty("maxBet")
+	@Column
 	private Double maxBet;
 	
 	/**
@@ -77,7 +97,7 @@ public class BetOffer {
 	public String getId() {
 		return id;
 	}
-
+ 
 	/**
 	 *
 	 * (Required)

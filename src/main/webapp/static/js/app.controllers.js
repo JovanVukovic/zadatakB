@@ -6,16 +6,22 @@ zadatakB.controller('Matches', function($scope, $http, $location, $routeParams) 
 				$scope.exampleout = {};
 			};
 			
-			$scope.exampleInput = "";
+			$scope.successData= false;
+			$scope.errorData=false;
 
-			$scope.getMaches = function() {
-				// GET api/users
-				$http.post('api/matches')
+			$scope.getMatches = function() {
+				
+				$http.post('api/matches', $scope.exampleInput)
 					.success(function(data, status) {
 						$scope.exampleout = data;
+						$scope.successData= true;
+						$scope.errorData=false;
 	
-					}).error(function() {
+					}).error(function(data,status) {
 						alert('Oops, something went wrong...')
+						$scope.error = data;
+						$scope.successData= false;
+						$scope.errorData=true;
 					})
 			};
 		});

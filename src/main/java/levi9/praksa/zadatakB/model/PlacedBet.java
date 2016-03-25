@@ -1,24 +1,37 @@
 package levi9.praksa.zadatakB.model;
 
-import java.util.HashMap;
-import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Entity
+@Table(name="placed_bet")
 public class PlacedBet {
 
+	@Id
+	@Column
+	@GeneratedValue
+	@JsonIgnore
+	private Long id;
+	
 	@JsonProperty("bookieId")
+	@Column
 	private String bookieId;
 	
 	@JsonProperty("betHome")
+	@Column
 	private Double betHome;
 	
 	@JsonProperty("betAway")
+	@Column
 	private Double betAway;
 		
 	/**

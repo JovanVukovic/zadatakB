@@ -7,13 +7,9 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.web.SpringBootServletInitializer;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import levi9.praksa.zadatakB.controller.ApiController;
 import levi9.praksa.zadatakB.exception.ZadatakBException;
 import levi9.praksa.zadatakB.impl.InMemoryExampleInput;
 import levi9.praksa.zadatakB.model.ErrorJSON;
