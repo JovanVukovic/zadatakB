@@ -28,10 +28,9 @@ public class ApiController {
 	@Autowired
 	private ExamleInputService inputService;
 	
-	
 	@RequestMapping(value = "api/matches", method = RequestMethod.POST)
 	public ExampleOut HandleRequest(@RequestBody ExampleInput exampleInput) {
-		
+				
 		return inputService.processInput(exampleInput);
 	}
 
@@ -42,15 +41,14 @@ public class ApiController {
 		error.setErrorDescription(exception.getDescription());
 		return new ResponseEntity<ErrorJSON>(error, HttpStatus.BAD_REQUEST);
 	}
-	
-	@ExceptionHandler(Exception.class)
-	  public ResponseEntity<ErrorJSON> handleError(HttpServletRequest req, Exception exception) {
-	    logger.error("Request: " + req.getRequestURL() + " raised " + exception);
-	    ErrorJSON error = new ErrorJSON();
-		error.setErrorCode(ErrorCodes.BAD_JSON_FILE.getCode());
-		error.setErrorDescription(exception.getMessage());		
-	    return new ResponseEntity<ErrorJSON>(error, HttpStatus.BAD_REQUEST);
-	  }
 
-	
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ErrorJSON> handleError(HttpServletRequest req, Exception exception) {
+		logger.error("Request: " + req.getRequestURL() + " raised " + exception);
+		ErrorJSON error = new ErrorJSON();
+		error.setErrorCode(ErrorCodes.BAD_JSON_FILE.getCode());
+		error.setErrorDescription(exception.getMessage());
+		return new ResponseEntity<ErrorJSON>(error, HttpStatus.BAD_REQUEST);
+	}
+
 }

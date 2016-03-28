@@ -21,7 +21,7 @@ import levi9.praksa.zadatakB.repository.ExampleOutRepository;
 import levi9.praksa.zadatakB.service.ExamleInputService;
 
 @Service
-public class InMemoryExampleInput implements ExamleInputService {
+public class ExampleInputServiceImpl implements ExamleInputService {
 
 	final static Logger logger = LogManager.getLogger(Main.class);
 
@@ -32,10 +32,10 @@ public class InMemoryExampleInput implements ExamleInputService {
 	private ExampleOutRepository exampleOutRepository;
 
 	/**
-	 * Returns List of Match
+	 * Returns List of Match if there are good odds and  if calculated bet is less than max bet on match.
 	 * 
 	 * @param exampleInput
-	 * @return List of Match
+	 * @return List of Match.
 	 */
 	private List<Match> findMatches(ExampleInput exampleInput) {
 
@@ -66,10 +66,8 @@ public class InMemoryExampleInput implements ExamleInputService {
 						}
 
 						placedBet1.setBookieId(exampleInput.getBookies().get(0).getId());
-						// placedBet1.setBetHome(betOffers1.get(i).getOddsHome());
 						placedBet1.setBetHome(bet1);
 						placedBet2.setBookieId(exampleInput.getBookies().get(1).getId());
-						// placedBet2.setBetAway(betOffers2.get(j).getOddsAway());
 						placedBet2.setBetAway(bet2);
 
 						List<PlacedBet> placedBets = new ArrayList<PlacedBet>();
@@ -80,7 +78,10 @@ public class InMemoryExampleInput implements ExamleInputService {
 						match.setId(betOffers1.get(i).getId());
 						match.setName(betOffers1.get(i).getName());
 						match.setPlacedBets(placedBets);
-						matches.add(match);
+					
+						if (bet1<betOffers1.get(i).getMaxBet() && bet2<betOffers2.get(j).getMaxBet()) {
+							matches.add(match);
+						}						
 					} else if (matcOdd2) {
 						PlacedBet placedBet1 = new PlacedBet();
 						PlacedBet placedBet2 = new PlacedBet();
@@ -95,11 +96,9 @@ public class InMemoryExampleInput implements ExamleInputService {
 						}
 
 						placedBet1.setBookieId(exampleInput.getBookies().get(0).getId());
-						// placedBet1.setBetAway(betOffers1.get(i).getOddsAway());
 						placedBet1.setBetAway(bet1);
 
 						placedBet2.setBookieId(exampleInput.getBookies().get(1).getId());
-						// placedBet2.setBetHome(betOffers2.get(j).getOddsHome());
 						placedBet2.setBetHome(bet2);
 
 						List<PlacedBet> placedBets = new ArrayList<PlacedBet>();
@@ -111,7 +110,10 @@ public class InMemoryExampleInput implements ExamleInputService {
 						match.setId(betOffers1.get(i).getId());
 						match.setName(betOffers1.get(i).getName());
 						match.setPlacedBets(placedBets);
-						matches.add(match);
+						
+						if (bet1<betOffers1.get(i).getMaxBet() && bet2<betOffers2.get(j).getMaxBet()) {
+							matches.add(match);
+						}
 					}
 				}
 			}
@@ -124,7 +126,7 @@ public class InMemoryExampleInput implements ExamleInputService {
 	 * <a href="http://www.sportsbettingworm.com/arbitrage-calculations/">http:/
 	 * /www.sportsbettingworm.com/arbitrage-calculations/</a>)
 	 * 
-	 * @param odd1 
+	 * @param odd1
 	 * @param odd2
 	 * @return Returns true if odd1 and odd2 are valid arbitrage odds.
 	 */
@@ -141,7 +143,8 @@ public class InMemoryExampleInput implements ExamleInputService {
 	}
 
 	/**
-	 * Returns ExampleOut object based on ExampleInput.
+	 * Returns ExampleOut object based on ExampleInput and saves both objects to database.
+	 * If ExampleInput exists in database, ExampleOut is read from database, and will not be saved to database. 
 	 * 
 	 * @param exampleInput
 	 * @return Returns ExampleOut object based on ExampleInput.
@@ -152,6 +155,16 @@ public class InMemoryExampleInput implements ExamleInputService {
 			throw new ZadatakBException(ErrorCodes.BAD_JSON_ONLY_ONE_BOOKIE, "Bad JSON, only one Bookie!");
 		} else {
 
+			List<ExampleInput> exampleInputList = exampleInputRepository
+					.findByBudgetAndDesiredProfit(exampleInput.getBudget(), exampleInput.getDesiredProfit());
+			if (exampleInputList!=null) {
+				for (int i = 0; i < exampleInputList.size(); i++) {
+					if (exampleInput.equals(exampleInputList.get(i))) {
+						return exampleOutRepository.findOne(exampleInputList.get(i).getId());
+					}
+				}
+			}
+
 			List<Match> matches = findMatches(exampleInput);
 			if (matches.size() == 0) {
 				logger.info("There is no match!");
@@ -161,8 +174,8 @@ public class InMemoryExampleInput implements ExamleInputService {
 			exampleOut.setCalculatedProfit(exampleInput.getDesiredProfit());
 			exampleOut.setMatches(matches);
 
-			 exampleInputRepository.save(exampleInput);
-			 exampleOutRepository.save(exampleOut);
+			exampleInputRepository.save(exampleInput);
+			exampleOutRepository.save(exampleOut);
 
 			return exampleOut;
 		}

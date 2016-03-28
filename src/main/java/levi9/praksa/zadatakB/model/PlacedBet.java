@@ -76,32 +76,31 @@ public class PlacedBet {
 	public void setBetAway(Double betAway) {
 		this.betAway = betAway;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	//public PlacedBet(Map<String, Object> additionalProperties) {
-	//	super();
-		//this.additionalProperties = additionalProperties;
-	//}
-
-	/*@JsonAnyGetter
-	public Map<String, Object> getAdditionalProperties() {
-		return this.additionalProperties;
-	}
-
-	@JsonAnySetter
-	public void setAdditionalProperty(String name, Object value) {
-		this.additionalProperties.put(name, value);
-	}
 
 	@Override
-	public String toString() {
-		return "PlacedBet [additionalProperties=" + additionalProperties + "]";
-	}*/
-
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PlacedBet other = (PlacedBet) obj;
+		if (betAway == null) {
+			if (other.betAway != null)
+				return false;
+		} else if (!betAway.equals(other.betAway))
+			return false;
+		if (betHome == null) {
+			if (other.betHome != null)
+				return false;
+		} else if (!betHome.equals(other.betHome))
+			return false;
+		if (bookieId == null) {
+			if (other.bookieId != null)
+				return false;
+		} else if (!bookieId.equals(other.bookieId))
+			return false;		
+		return true;
+	}
 }

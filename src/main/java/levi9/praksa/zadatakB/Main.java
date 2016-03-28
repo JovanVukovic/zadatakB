@@ -1,3 +1,10 @@
+/* 
+ * Levi9 internship 21-25 March 2016.
+ * Jovan Vukovic
+ * Application for finding arbitrage bets, and calculates amount of money to place on bets,
+ * based on desired profit, budget and maximum bet on single match. 
+ * 
+ * */
 package levi9.praksa.zadatakB;
 
 import java.io.File;
@@ -11,7 +18,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import levi9.praksa.zadatakB.exception.ZadatakBException;
-import levi9.praksa.zadatakB.impl.InMemoryExampleInput;
+import levi9.praksa.zadatakB.impl.ExampleInputServiceImpl;
 import levi9.praksa.zadatakB.model.ErrorJSON;
 import levi9.praksa.zadatakB.model.ExampleInput;
 import levi9.praksa.zadatakB.model.ExampleOut;
@@ -25,7 +32,7 @@ public class Main {
 
 	public static void commandLineApp(String[] args) {
 		try {
-			ExamleInputService inputService = new InMemoryExampleInput();
+			ExamleInputService inputService = new ExampleInputServiceImpl();
 			if (args.length < 1) {
 
 			} else if (args.length == 1) {
@@ -56,7 +63,6 @@ public class Main {
 		try {
 			MAPPER.writeValue(new File(pathOut), errorOut);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

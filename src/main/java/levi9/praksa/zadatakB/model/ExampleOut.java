@@ -37,6 +37,7 @@ public class ExampleOut {
 	@JsonProperty("calculatedProfit")
 	@Column
 	private Double calculatedProfit;
+	
 	/**
 	 *
 	 * (Required)
@@ -117,7 +118,4 @@ public class ExampleOut {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	
-
 }

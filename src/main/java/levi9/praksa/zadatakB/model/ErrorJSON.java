@@ -38,7 +38,5 @@ public class ErrorJSON {
 
 	public void setErrorDescription(String errorDescription) {
 		this.errorDescription = errorDescription;
-	}
-	
-	
+	}	
 }

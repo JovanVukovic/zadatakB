@@ -8,11 +8,13 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -23,6 +25,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Table(name = "`match`")
 public class Match {
 
+	@Column
+	@Id
+	@GeneratedValue
+	@JsonIgnore
+	private Long id_match;
+
 	/**
 	 *
 	 * (Required)
@@ -30,9 +38,8 @@ public class Match {
 	 */
 	@JsonProperty("id")
 	@Column
-	@Id
 	private String id;
-	
+
 	/**
 	 *
 	 * (Required)
@@ -41,7 +48,7 @@ public class Match {
 	@JsonProperty("name")
 	@Column
 	private String name;
-	
+
 	/**
 	 *
 	 * (Required)
@@ -49,7 +56,7 @@ public class Match {
 	 */
 	@JsonProperty("placedBets")
 	@ElementCollection
-	@CollectionTable(name = "placed_bets", joinColumns = @JoinColumn(name = "id"))
+	@CollectionTable(name = "placed_bets", joinColumns = @JoinColumn(name = "id") )
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "match_id")
 	private List<PlacedBet> placedBets = new ArrayList<PlacedBet>();
@@ -142,4 +149,38 @@ public class Match {
 		this.placedBets = placedBets;
 	}
 
+	public Long getId_match() {
+		return id_match;
+	}
+
+	public void setId_match(Long id_match) {
+		this.id_match = id_match;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Match other = (Match) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (placedBets == null) {
+			if (other.placedBets != null)
+				return false;
+		} else if (!placedBets.equals(other.placedBets))
+			return false;
+		return true;
+	}
 }

@@ -56,7 +56,7 @@ public class Booky {
 	@CollectionTable(name="bet_offers", joinColumns=@JoinColumn(name="id"))
 	@OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="booky_id")
-	private List<BetOffer> betOffers;// = new ArrayList<BetOffer>();
+	private List<BetOffer> betOffers;
 	
 	/**
 	* No args constructor for use in serialization
@@ -146,4 +146,36 @@ public class Booky {
 		this.betOffers = betOffers;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Booky other = (Booky) obj;
+		if (betOffers == null) {
+			if (other.betOffers != null)
+				return false;
+		} else if (!betOffers.equals(other.betOffers))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Booky id_booky= " + id_booky + ", id=" + id + ", name=" + name + ", betOffers=" + betOffers + "]";
+	}
 }
