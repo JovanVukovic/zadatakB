@@ -9,6 +9,7 @@ public interface ExampleInputRepository extends JpaRepository<ExampleInput, Long
 
 	/**
 	 * Returns list of ExampleInput that have same Budget and DesiredProfit from database
+	 * 
 	 * @param budget
 	 * @param desiredProfit
 	 * @return Returns list of ExampleInput.
